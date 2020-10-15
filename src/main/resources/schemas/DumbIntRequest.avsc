@@ -1,0 +1,9 @@
+{
+  "type" : "record",
+  "name" : "DumbIntRequest",
+  "namespace" : "avro.model",
+  "fields" : [{
+    "name" : "val1",
+    "type" : "long"
+  }]
+}

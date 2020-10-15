@@ -1,0 +1,12 @@
+{
+  "type" : "record",
+  "name" : "ClientIdentifier",
+  "namespace" : "avro.model",
+  "fields" : [ {
+    "name" : "hostName",
+    "type" : "string"
+  }, {
+    "name" : "ipAddress",
+    "type" : "string"
+  } ]
+}

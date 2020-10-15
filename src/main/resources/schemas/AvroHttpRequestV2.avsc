@@ -1,0 +1,40 @@
+{
+  "type" : "record",
+  "name" : "AvroHttpRequestV2",
+  "namespace" : "avro.model",
+  "fields" : [ {
+    "name" : "requestTime",
+    "type" : "long"
+  }, {
+    "name" : "clientIdentifier",
+    "type" : {
+      "type" : "record",
+      "name" : "ClientIdentifier",
+      "fields" : [ {
+        "name" : "hostName",
+        "type" : "string"
+      }, {
+        "name" : "ipAddress",
+        "type" : "string"
+      } ]
+    }
+  }, {
+    "name" : "employeeNames",
+    "type" : {
+      "type" : "array",
+      "items" : "string"
+    },
+    "default" : [ ]
+  }, {
+    "name" : "active",
+    "type" : {
+      "type" : "enum",
+      "name" : "Active",
+      "symbols" : [ "YES", "NO" ]
+    }
+  }, {
+     "name" : "department",
+     "type" : "string",
+     "default" : "🤷🏼‍♂️"
+  }]
+}
