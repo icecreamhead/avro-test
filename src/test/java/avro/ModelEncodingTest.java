@@ -20,15 +20,8 @@ class ModelEncodingTest {
 
   private static final boolean PRINT_BYTES = false;
 
-  private final SchemaStore.Cache cache = new SchemaStore.Cache();
+  private final SchemaStore.Cache cache = CacheProvider.getCache();
   private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-  @BeforeEach
-  void setUp() throws IOException {
-    cache.addSchema(new Schema.Parser().parse(DumbIntComparer.class.getClassLoader().getResourceAsStream("schemas/DumbIntRequest.avsc")));
-    cache.addSchema(new Schema.Parser().parse(DumbIntComparer.class.getClassLoader().getResourceAsStream("schemas/DumbIntRequest2.avsc")));
-    CacheProvider.getCache();
-  }
 
   @Test
   void canSerializeAndDeserializeSameSchema() throws IOException {

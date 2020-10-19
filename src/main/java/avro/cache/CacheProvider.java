@@ -1,6 +1,7 @@
 package avro.cache;
 
 import org.apache.avro.Schema;
+import org.apache.avro.SchemaParseException;
 import org.apache.avro.message.SchemaStore;
 
 import java.io.BufferedReader;
@@ -20,24 +21,22 @@ public class CacheProvider {
     return CACHE;
   }
 
-  // Loads all the schemas from resources, appends them into a single string, and then parses it into the cache.
-  //  The schemas are merged into a single string to avoid the duplicate definition problem
+  // Loads all the schemas from resources and parses them into the cache. Duplicates are ignored.
   private static void loadSchemas() throws RuntimeException {
 
-    try (InputStream in = getResourceAsStream("/schemas");
-         BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-      String resource;
+    try (InputStream in = getResourceAsStream("/schemas"); BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
 
-      StringBuilder bob = new StringBuilder();
+      String resource;
       while ((resource = br.readLine()) != null) {
-        try (BufferedReader b = new BufferedReader(new InputStreamReader(getResourceAsStream("/schemas/" + resource)))) {
-          String l;
-          while ((l = b.readLine()) != null) {
-            bob.append(l);
+        try {
+          CACHE.addSchema(PARSER.parse(getResourceAsStream("/schemas/" + resource)));
+        } catch (SchemaParseException spe) {
+          if (!spe.getMessage().startsWith("Can't redefine")) {
+            throw spe;
           }
+          // otherwise do nothing
         }
       }
-      PARSER.parse(bob.toString());
 
     } catch (Exception e) {
       throw new RuntimeException(e);
@@ -45,8 +44,7 @@ public class CacheProvider {
   }
 
   private static InputStream getResourceAsStream(String resource) {
-    final InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
-    return in == null ? CacheProvider.class.getResourceAsStream(resource) : in;
+    return CacheProvider.class.getResourceAsStream(resource);
   }
 
 }
