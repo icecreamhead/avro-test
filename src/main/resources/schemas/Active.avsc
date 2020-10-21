@@ -1,0 +1,6 @@
+{
+  "type" : "enum",
+  "name" : "Active",
+  "namespace" : "avro.model",
+  "symbols" : [ "YES", "NO" ]
+}

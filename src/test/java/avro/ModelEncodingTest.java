@@ -1,9 +1,7 @@
 package avro;
 
-import org.apache.avro.Schema;
 import org.apache.avro.message.SchemaStore;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;

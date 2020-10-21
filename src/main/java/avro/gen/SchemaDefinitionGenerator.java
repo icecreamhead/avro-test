@@ -1,5 +1,6 @@
 package avro.gen;
 
+import org.apache.avro.LogicalTypes;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 
@@ -11,16 +12,21 @@ public class SchemaDefinitionGenerator {
 
   public static void main(String[] args) throws IOException {
 
+    Schema active = SchemaBuilder.enumeration("Active")
+        .namespace("avro.model")
+        .symbols("YES", "NO");
+
     Schema clientIdentifier = SchemaBuilder.record("ClientIdentifier")
         .namespace("avro.model")
         .fields().requiredString("hostName").requiredString("ipAddress")
         .endRecord();
 
     Schema avroHttpRequestV1 = SchemaBuilder.record("AvroHttpRequestV1")
+
         .namespace("avro.model")
         .fields().requiredInt("requestTime")
         .name("clientIdentifier")
-        .type(clientIdentifier)
+        .type(clientIdentifier.getValueType())
         .noDefault()
         .name("employeeNames")
         .type()
@@ -29,9 +35,7 @@ public class SchemaDefinitionGenerator {
         .stringType()
         .arrayDefault(List.of())
         .name("active")
-        .type()
-        .enumeration("Active")
-        .symbols("YES", "NO")
+        .type(active.getValueType())
         .noDefault()
         .endRecord();
 
@@ -39,7 +43,7 @@ public class SchemaDefinitionGenerator {
         .namespace("avro.model")
         .fields().requiredLong("requestTime")
         .name("clientIdentifier")
-        .type(clientIdentifier)
+        .type(clientIdentifier.getValueType())
         .noDefault()
         .name("employeeNames")
         .type()
@@ -48,17 +52,28 @@ public class SchemaDefinitionGenerator {
         .stringType()
         .arrayDefault(List.of())
         .name("active")
-        .type()
-        .enumeration("Active")
-        .symbols("YES", "NO")
+        .type(active.getValueType())
         .noDefault()
         .name("department")
         .type()
         .stringType()
         .stringDefault("🤷🏼‍♂️")
+        .name("amount")
+        .type(LogicalTypes.decimal(19, 2).addToSchema(Schema.create(Schema.Type.BYTES)))
+        .withDefault("0.00")
         .endRecord();
 
-    for (Schema schema : List.of(clientIdentifier, avroHttpRequestV1, avroHttpRequestV2)) {
+    Schema zonedDateTime = new ZonedDateTimeType().addToSchema(Schema.create(Schema.Type.LONG));
+
+    Schema timestampedEvent = SchemaBuilder.record("TimestampedEvent")
+        .namespace("avro.model")
+        .fields()
+        .name("zonedDateTime")
+        .type(zonedDateTime)
+        .noDefault()
+        .endRecord();
+
+    for (Schema schema : List.of(active, clientIdentifier, avroHttpRequestV1, avroHttpRequestV2, timestampedEvent)) {
       FileWriter writer = new FileWriter("src/main/resources/schemas/" + schema.getName() + ".avsc");
       writer.write(schema.toString(true));
       writer.flush();

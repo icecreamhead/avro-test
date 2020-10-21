@@ -7,17 +7,7 @@
     "type" : "long"
   }, {
     "name" : "clientIdentifier",
-    "type" : {
-      "type" : "record",
-      "name" : "ClientIdentifier",
-      "fields" : [ {
-        "name" : "hostName",
-        "type" : "string"
-      }, {
-        "name" : "ipAddress",
-        "type" : "string"
-      } ]
-    }
+    "type" : "avro.model.ClientIdentifier"
   }, {
     "name" : "employeeNames",
     "type" : {
@@ -27,14 +17,19 @@
     "default" : [ ]
   }, {
     "name" : "active",
-    "type" : {
-      "type" : "enum",
-      "name" : "Active",
-      "symbols" : [ "YES", "NO" ]
-    }
+    "type" : "avro.model.Active"
   }, {
     "name" : "department",
     "type" : "string",
     "default" : "🤷🏼‍♂️"
+  }, {
+    "name" : "amount",
+    "type" : {
+      "type" : "bytes",
+      "logicalType" : "decimal",
+      "precision" : 19,
+      "scale" : 2
+    },
+    "default" : "0.00"
   } ]
 }

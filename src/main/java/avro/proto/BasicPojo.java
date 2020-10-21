@@ -7,13 +7,13 @@ public class BasicPojo {
 
   private final long id;
   private final String name;
-  private final ZonedDateTime timestamp;
+//  private final ZonedDateTime timestamp;
   private final BigDecimal[] rates;
 
-  public BasicPojo(long id, String name, ZonedDateTime timestamp, BigDecimal[] rates) {
+  public BasicPojo(long id, String name, /*ZonedDateTime timestamp,*/ BigDecimal[] rates) {
     this.id = id;
     this.name = name;
-    this.timestamp = timestamp;
+//    this.timestamp = timestamp;
     this.rates = rates;
   }
 
@@ -25,9 +25,9 @@ public class BasicPojo {
     return name;
   }
 
-  public ZonedDateTime getTimestamp() {
-    return timestamp;
-  }
+//  public ZonedDateTime getTimestamp() {
+//    return timestamp;
+//  }
 
   public BigDecimal[] getRates() {
     return rates;

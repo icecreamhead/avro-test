@@ -1,10 +1,12 @@
 package avro.cache;
 
+import org.apache.avro.LogicalTypes;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaParseException;
 import org.apache.avro.message.SchemaStore;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -23,7 +25,12 @@ public class CacheProvider {
 
   // Loads all the schemas from resources and parses them into the cache. Duplicates are ignored.
   private static void loadSchemas() throws RuntimeException {
-
+    try {
+      CACHE.addSchema(PARSER.parse(getResourceAsStream("/schemas/Active.avsc")));
+      CACHE.addSchema(PARSER.parse(getResourceAsStream("/schemas/ClientIdentifier.avsc")));
+    } catch (IOException e) {
+      // do nothing
+    }
     try (InputStream in = getResourceAsStream("/schemas"); BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
 
       String resource;

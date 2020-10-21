@@ -32,10 +32,16 @@
             <version>3.16.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro-maven-plugin</artifactId>
+            <version>${avro.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.avro</groupId>
                 <artifactId>avro-maven-plugin</artifactId>
@@ -46,16 +52,60 @@
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>schema</goal>
-                            <goal>protocol</goal>
-                            <goal>idl-protocol</goal>
+                            <!--<goal>induce</goal>-->
                         </goals>
                         <configuration>
-                            <sourceDirectory>${project.basedir}/src/main/resources/</sourceDirectory>
-                            <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+                            <!-- induce config -->
+                            <imports>
+                                <import>${project.basedir}/src/main/resources/schemas/ClientIdentifier.avsc</import>
+                                <import>${project.basedir}/src/main/resources/schemas/Active.avsc</import>
+                                <!--<import>${project.basedir}/src/main/java/avro/proto/BasicPojo.java</import>-->
+                            </imports>
+                            <!--<imports>${project.basedir}/src/main/java/avro/proto</imports>-->
+                            <javaSourceDirectories>${project.basedir}/src/main/java/avro/proton</javaSourceDirectories>
+                            <avroOutputDirectory>${project.basedir}/src/main/resources/schemas</avroOutputDirectory>
+
+                            <!-- schema config -->
+                            <sourceDirectory>${project.basedir}/src/main/resources/schemas</sourceDirectory>
+                            <outputDirectory>${project.build.directory}/generated-sources/java</outputDirectory>
+                            <encoding>UTF-8</encoding>
+                            <stringType>String</stringType>
+                            <optionalGettersForNullableFieldsOnly>true</optionalGettersForNullableFieldsOnly>
+                            <createSetters>false</createSetters>
+                            <enableDecimalLogicalType>true</enableDecimalLogicalType>
+                            <customConversions>
+                                <!-- tbc -->
+                            </customConversions>
+                            <customLogicalTypeFactories>
+                                <!-- tbc -->
+                            </customLogicalTypeFactories>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/java</source>
+                                <!--<source>${project.build.directory}/classes</source>
+                                <source>${project.build.directory}/generated-sources/java</source>
+                                <source>${project.build.directory}/generated-sources/java/avro/model</source>-->
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
