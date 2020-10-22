@@ -18,6 +18,7 @@ import avro.model.AvroHttpRequestV1;
 import avro.model.AvroHttpRequestV2;
 import avro.model.ClientIdentifier;
 
+import static java.math.BigDecimal.ZERO;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SpecificWriterTest {
@@ -51,6 +52,7 @@ class SpecificWriterTest {
     assertThat(out.getRequestTime()).isEqualTo(54321L);
     assertThat(out.getDepartment()).isEqualTo("🤷🏼‍♂️");
     assertThat(out.getClientIdentifier().getHostName()).isEqualTo("I AM A HOST");
+    assertThat(out.getAmount()).isEqualTo(new BigDecimal("0.00"));
   }
 
   @Test
