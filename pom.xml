@@ -55,20 +55,12 @@
                             <!--<goal>induce</goal>-->
                         </goals>
                         <configuration>
-                            <!-- induce config -->
                             <imports>
                                 <import>${project.basedir}/src/main/resources/schemas/ClientIdentifier.avsc</import>
                                 <import>${project.basedir}/src/main/resources/schemas/Active.avsc</import>
-                                <!--<import>${project.basedir}/src/main/java/avro/proto/BasicPojo.java</import>-->
                             </imports>
-                            <!--<imports>${project.basedir}/src/main/java/avro/proto</imports>-->
-                            <javaSourceDirectories>${project.basedir}/src/main/java/avro/proton</javaSourceDirectories>
-                            <avroOutputDirectory>${project.basedir}/src/main/resources/schemas</avroOutputDirectory>
-
-                            <!-- schema config -->
                             <sourceDirectory>${project.basedir}/src/main/resources/schemas</sourceDirectory>
                             <outputDirectory>${project.build.directory}/generated-sources/java</outputDirectory>
-                            <encoding>UTF-8</encoding>
                             <stringType>String</stringType>
                             <optionalGettersForNullableFieldsOnly>true</optionalGettersForNullableFieldsOnly>
                             <createSetters>false</createSetters>
@@ -79,6 +71,22 @@
                             <customLogicalTypeFactories>
                                 <!-- tbc -->
                             </customLogicalTypeFactories>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>induce</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>induce</goal>
+                        </goals>
+                        <configuration>
+                            <!--<imports>
+                                <import>${project.basedir}/src/main/resources/schemas/ClientIdentifier.avsc</import>
+                                <import>${project.basedir}/src/main/resources/schemas/Active.avsc</import>
+                            </imports>-->
+                            <javaSourceDirectories>${project.basedir}/src/main/java/avro/proto</javaSourceDirectories>
+                            <avroOutputDirectory>${project.basedir}/src/main/resources/schemas</avroOutputDirectory>
+                            <encoding>UTF-8</encoding>
                         </configuration>
                     </execution>
                 </executions>
@@ -97,9 +105,6 @@
                         <configuration>
                             <sources>
                                 <source>${project.build.directory}/generated-sources/java</source>
-                                <!--<source>${project.build.directory}/classes</source>
-                                <source>${project.build.directory}/generated-sources/java</source>
-                                <source>${project.build.directory}/generated-sources/java/avro/model</source>-->
                             </sources>
                         </configuration>
                     </execution>

@@ -1,0 +1,12 @@
+{
+  "type" : "record",
+  "name" : "TimestampedEvent",
+  "namespace" : "avro.model",
+  "fields" : [ {
+    "name" : "zonedDateTime",
+    "type" : {
+      "type" : "long",
+      "logicalType" : "zoned-date-time"
+    }
+  } ]
+}

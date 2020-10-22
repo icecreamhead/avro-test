@@ -6,6 +6,7 @@ import org.apache.avro.SchemaBuilder;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class SchemaDefinitionGenerator {
@@ -22,11 +23,10 @@ public class SchemaDefinitionGenerator {
         .endRecord();
 
     Schema avroHttpRequestV1 = SchemaBuilder.record("AvroHttpRequestV1")
-
         .namespace("avro.model")
         .fields().requiredInt("requestTime")
         .name("clientIdentifier")
-        .type(clientIdentifier.getValueType())
+        .type(clientIdentifier)
         .noDefault()
         .name("employeeNames")
         .type()
@@ -35,7 +35,7 @@ public class SchemaDefinitionGenerator {
         .stringType()
         .arrayDefault(List.of())
         .name("active")
-        .type(active.getValueType())
+        .type(active)
         .noDefault()
         .endRecord();
 
@@ -43,7 +43,7 @@ public class SchemaDefinitionGenerator {
         .namespace("avro.model")
         .fields().requiredLong("requestTime")
         .name("clientIdentifier")
-        .type(clientIdentifier.getValueType())
+        .type(clientIdentifier)
         .noDefault()
         .name("employeeNames")
         .type()
@@ -52,7 +52,7 @@ public class SchemaDefinitionGenerator {
         .stringType()
         .arrayDefault(List.of())
         .name("active")
-        .type(active.getValueType())
+        .type(active)
         .noDefault()
         .name("department")
         .type()
@@ -60,7 +60,7 @@ public class SchemaDefinitionGenerator {
         .stringDefault("🤷🏼‍♂️")
         .name("amount")
         .type(LogicalTypes.decimal(19, 2).addToSchema(Schema.create(Schema.Type.BYTES)))
-        .withDefault("0.00")
+        .withDefault(new byte[]{0})
         .endRecord();
 
     Schema zonedDateTime = new ZonedDateTimeType().addToSchema(Schema.create(Schema.Type.LONG));
